@@ -37,6 +37,14 @@ dependencies:
   image_picker:
   image_cropper:
   fluttertoast:
+  glassmorphism:
+  email_validator:
+  flutter_animated_dialog:
+  audioplayers:
+  http:
+  gradient_progress:
+  speech_to_text: 
+  flutter_pw_validator:
 
 dev_dependencies:
   flutter_test:

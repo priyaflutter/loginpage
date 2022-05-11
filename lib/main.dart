@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginpage/createpage.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
@@ -17,6 +19,16 @@ class first extends StatefulWidget {
 }
 
 class _firstState extends State<first> {
+  SpeechToText speechToText = SpeechToText();
+  bool speechEnabled = false;
+  String lastWords = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +41,11 @@ class _firstState extends State<first> {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                  shape: BoxShape.circle,
                   // color: Color(0xff010211),
-                image: DecorationImage(image: AssetImage("images/per2.jpg"),fit: BoxFit.fitHeight)
-                  ),
+                  image: DecorationImage(
+                      image: AssetImage("images/login.jpg"),
+                      fit: BoxFit.fitHeight)),
             ),
             Container(
               height: 100,
@@ -45,9 +58,13 @@ class _firstState extends State<first> {
                 },
                 controller: mail,
                 decoration: InputDecoration(
+                    // suffixIcon: IconButton(onPressed: () async {
+                    //
+                    //
+                    // }, icon: Icon(Icons.mic)),
                     prefixIcon: Icon(Icons.phone),
                     border: OutlineInputBorder(),
-                    labelText: "Phone Or Email",
+                    labelText: "Enter Email Or Mobile No...",
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Color(0xe1000211), width: 2)),
@@ -64,40 +81,68 @@ class _firstState extends State<first> {
                   });
                 },
                 controller: pass,
+                obscureText: show,
                 decoration: InputDecoration(
                     prefixIcon: IconButton(
                         onPressed: () {
                           setState(() {
-                            show = !show;
+                            if (show == false) {
+                              show = true;
+                            } else {
+                              show = false;
+                            }
                           });
                         },
                         icon: Icon(
                             show ? Icons.visibility_off : Icons.visibility)),
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xe1000211), width: 2)),
-                    labelText: "Password",
+                      borderSide:
+                          BorderSide(color: Color(0xe1000211), width: 2),
+                    ),
+                    labelText: "Enter Password...",
                     errorText: passstatus ? "Pls fill Details....." : null),
               ),
             ),
             InkWell(
-              onTap: () {
-                setState(() {
+              onTap: () async {
                   String mail1 = mail.text;
                   String pass1 = pass.text;
+
+                  // var email = mail.text;
+                  // bool emailValid = RegExp(
+                  //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  //     .hasMatch(email);
+                  // print(emailValid);
+                  //
+                  // setState(() {
+                  //   mailstatus = emailValid;
+                  // });
 
                   if (mail1.isEmpty || pass1.isEmpty) {
                     mailstatus = true;
                     passstatus = true;
-                  }
-                });
+                  } else
+
+                      {
+                        Map map1 = {
+                          "email": mail1,
+                          "passw": pass1};
+
+                        var url = Uri.parse(
+                            'https://priyadevani.000webhostapp.com/Apicalling/login.php');
+                        var response = await http.post(url, body: map1);
+                        print('Response status: ${response.statusCode}');
+                        print('Response body: ${response.body}');
+                      }
+
+
               },
               child: Container(
                 height: 50,
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: double.infinity,
-                decoration: BoxDecoration(color: Color(0xff0f0942)),
+                decoration: BoxDecoration(color: Colors.black),
                 child: Center(
                     child: Text(
                   "Log In",
@@ -108,19 +153,22 @@ class _firstState extends State<first> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              height: 25,
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              width: double.infinity,
-              child: InkWell(
-                onTap: () {},
-                child: Center(
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Color(0xe1000211),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: 25,
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                width: double.infinity,
+                child: InkWell(
+                  onTap: () {},
+                  child: Center(
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -137,6 +185,10 @@ class _firstState extends State<first> {
                 "__________________OR__________________",
                 style: TextStyle(fontSize: 20, inherit: true),
               )),
+            ),
+            Text(
+              "If you Don't Have Account.....",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 20,
@@ -172,5 +224,8 @@ class _firstState extends State<first> {
   bool mailstatus = false;
   bool passstatus = false;
 
-  bool show = true;
+  bool show = false;
+  String a = "";
+
+  bool? emailValid;
 }
