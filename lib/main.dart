@@ -51,7 +51,7 @@ class _firstState extends State<first> {
                   shape: BoxShape.circle,
                   // color: Color(0xff010211),
                   image: DecorationImage(
-                      image: AssetImage("images/login.jpg"),
+                      image: AssetImage("animation/login.json"),
                       fit: BoxFit.fitHeight)),
             ),
             Container(
