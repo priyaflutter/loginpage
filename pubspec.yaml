@@ -46,7 +46,12 @@ dependencies:
   speech_to_text: 
   flutter_pw_validator:
   shared_preferences:
-  lottie: 
+  lottie:
+  flutter_spinkit:
+  animated_background:
+  flutter_easyloading:
+  loading_animations:
+  multi_image_picker:
 
 dev_dependencies:
   flutter_test:

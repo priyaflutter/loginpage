@@ -9,6 +9,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loginpage/main.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -24,11 +25,26 @@ class _create1State extends State<create1> {
 
   @override
   Widget build(BuildContext context) {
+
+    double theight = MediaQuery.of(context).size.height;
+    double twidth = MediaQuery.of(context).size.width;
+    double statusbarheight = MediaQuery.of(context).padding.top;
+    double navibartheight = MediaQuery.of(context).padding.bottom;
+    double appbarheight =kToolbarHeight;
+
+    double bodyheight = theight - navibartheight - statusbarheight;
+
+
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return first();
+      },));
+    },),
       body: SingleChildScrollView(
         child: SafeArea(
-            child: Container(
-              height: 690,
+            child: Stack(children: [Container(
+              height:  bodyheight,
               width: double.infinity,
               decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [
@@ -48,8 +64,7 @@ class _create1State extends State<create1> {
                           return AlertDialog(
                             actions: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   InkWell(
                                     onTap: () async {
@@ -161,7 +176,7 @@ class _create1State extends State<create1> {
                       ),
                     )
                         : Container(
-                        height: 150,
+                        height:  bodyheight*0.25,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -181,7 +196,7 @@ class _create1State extends State<create1> {
                     });
                   },
                     child: Container(
-                      height: 70,
+                      height:bodyheight*0.10,
                       margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: TextField(
                         onChanged: (value) {
@@ -205,7 +220,7 @@ class _create1State extends State<create1> {
                     ),
                   ),
                   Container(
-                    height: 70,
+                    height:bodyheight*0.10,
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: TextField(
                       onChanged: (value) {
@@ -229,7 +244,7 @@ class _create1State extends State<create1> {
                     ),
                   ),
                   Container(
-                    height: 70,
+                    height:bodyheight*0.10,
                     margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: TextField(
                       onChanged: (value) {
@@ -255,7 +270,7 @@ class _create1State extends State<create1> {
                     ),
                   ),
                   Container(
-                    height: 70,
+                    height:bodyheight*0.10,
                     margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: TextField(
                       onChanged: (value) {
@@ -360,7 +375,7 @@ class _create1State extends State<create1> {
                           if (mm.connection == 1) // connection
                               {
                             if (mm.result == 1) // first time data store
-                              {
+                                {
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(
@@ -378,22 +393,14 @@ class _create1State extends State<create1> {
                               );
                             }
                           }
-                          else{
-
-                            Fluttertoast.showToast(
-                                msg: "Email already Exit....",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            );
-                          }
                         }
+
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                          return first();
+                        },)) ;
                       },
                       child: GlassmorphicContainer(
-                        height: 50,
+                        height:bodyheight*0.10,
                         width: 150,
                         borderRadius: 20,
                         blur: 20,
@@ -423,12 +430,13 @@ class _create1State extends State<create1> {
                               "Register",
                               style: TextStyle(
                                 // color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize:bodyheight*0.03,
                                   fontWeight: FontWeight.bold),
                             )),
                       )),
                 ],
               ),
+            ),],
             )),
       ),
     );
