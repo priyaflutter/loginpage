@@ -1,13 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loginpage/createpage.dart';
 import 'package:loginpage/splashscreen.dart';
+import 'package:loginpage/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class home1 extends StatefulWidget {
   static SharedPreferences? pref;
@@ -22,6 +28,7 @@ class _home1State extends State<home1> {
   String? imagepath;
   String? nameee;
   String? maillll;
+  String? id;
   int currentPageIndex = 0;
   bool image1 = false;
 
@@ -38,9 +45,9 @@ class _home1State extends State<home1> {
   }
 
   getvalue() {
+    id = splash.pref!.getString("id") ?? "";
     imagepath = splash.pref!.getString("imagename") ?? "";
     nameee = splash.pref!.getString("name") ?? "";
-    maillll = splash.pref!.getString("email") ?? "";
     maillll = splash.pref!.getString("email") ?? "";
   }
 
@@ -64,7 +71,14 @@ class _home1State extends State<home1> {
 
     return Scaffold(
         appBar: cnt == 1
-            ? AppBar( backgroundColor: Colors.black,
+            ? AppBar(
+                backgroundColor: Colors.black,
+                actions: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://priyadevani.000webhostapp.com/Apicalling/$imagepath'),
+                  )
+                ],
                 title: Text(
                   "Addpage",
                   style: TextStyle(
@@ -73,7 +87,7 @@ class _home1State extends State<home1> {
               )
             : AppBar(
                 title: Text(
-                  "Viewpage",
+                  "Homepage",
                   style: TextStyle(
                       fontSize: bodyheight * 0.03, fontWeight: FontWeight.bold),
                 ),
@@ -212,12 +226,143 @@ class Viewdata extends StatefulWidget {
 }
 
 class _ViewdataState extends State<Viewdata> {
+  List<Map> list = [];
+
+  List imagelist = [
+    "images/fashion.jpg",
+    "images/Health.jpg",
+    "images/mobile.jpg",
+    "images/furniture.jpg",
+    "images/books.jpg",
+    "images/cosmetics.jpg",
+    "images/surgical.jpg",
+    "images/toy.jpg",
+  ];
+  List catogaryy = [
+    "Fashion & Beauty",
+    "Health & Personal Care",
+    "Mobile & Electronics Devices",
+    "Home & Furniture",
+    "Books & Education",
+    "Cosmetics",
+    "Surgical",
+    "Toy Children & Baby",
+  ];
+
   @override
   Widget build(BuildContext context) {
+    double theight = MediaQuery.of(context).size.height;
+    double twidth = MediaQuery.of(context).size.width;
+    double statusbarheight = MediaQuery.of(context).padding.top;
+    double navibartheight = MediaQuery.of(context).padding.bottom;
+    double appbarheight = kToolbarHeight;
+
+    double bodyheight = theight - navibartheight - statusbarheight;
+
     return Scaffold(
-      backgroundColor: Colors.yellow,
+      // backgroundColor: Colors.yellow,
+      body: Container(
+        height: bodyheight,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Color(0xffecd9d9),
+            Color(0xffe0cccc),
+            Color(0xffd5c1c1)
+          ]),
+        ),
+        child: ListView(
+          children: [
+            Container(
+              height: bodyheight * 0.05,
+              child: TextField(
+                onChanged: (value) {},
+                controller: search,
+                decoration: InputDecoration(
+                  suffixIconColor: Colors.black,
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(bodyheight * 0.002))),
+                  labelText: "Search here....",
+                  labelStyle: TextStyle(color: Colors.black),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.black, width: bodyheight * 0.001)),
+                ),
+              ),
+            ),
+            Container(
+              height: bodyheight * 0.90,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(color: Colors.black12, blurRadius: bodyheight * 0.03)
+              ]),
+              margin: EdgeInsets.fromLTRB(
+                  bodyheight * 0.01, bodyheight * 0.01, bodyheight * 0.01, 0),
+              child: AlignedGridView.count(
+                crossAxisCount: 2,
+                itemCount: catogaryy.length,
+                mainAxisSpacing: bodyheight * 0.02,
+                crossAxisSpacing: bodyheight * 0.02,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return create1();
+                        },
+                      ));
+                    },
+                    child: Container(
+                      height: bodyheight * 0.30,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(bodyheight * 0.02))),
+                        child: Container(
+                          height: bodyheight * 0.28,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(bodyheight * 0.02)),
+                            image: DecorationImage(
+                                image: AssetImage(imagelist[index]),
+                                fit: BoxFit.fill),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color(0xfff1efef),
+                                  blurRadius: bodyheight * 0.03),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: bodyheight * 0.05,
+                              ),
+                              Text(
+                                catogaryy[index],
+                                style: TextStyle(
+                                    fontSize: bodyheight * 0.02,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
+
+  TextEditingController search = TextEditingController();
 }
 
 class adddata extends StatefulWidget {
@@ -230,6 +375,17 @@ class adddata extends StatefulWidget {
 class _adddataState extends State<adddata> {
   String img = "";
   CroppedFile? croppedFile;
+
+  String? userid;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    userid = splash.pref!.getString("id") ?? "";
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -259,20 +415,19 @@ class _adddataState extends State<adddata> {
                 children: [
                   Container(
                     height: bodyheight * 0.25,
-                    child: image != ""
+                    child: selectimage != ""
                         ? CircleAvatar(
-                      backgroundImage:
-                      FileImage(File(imageFileList![0].path)),
-                      maxRadius: bodyheight * 0.02,
-                    )
+                            backgroundImage: FileImage(File(imagelist[0])),
+                            maxRadius: bodyheight * 0.30,
+                          )
                         : Container(
-                        height: bodyheight * 0.25,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage("images/upload (2).gif"),
-                                fit: BoxFit.fitHeight))),
+                            height: bodyheight * 0.25,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: AssetImage("images/upload (2).gif"),
+                                    fit: BoxFit.fitHeight))),
                   ),
                   Positioned(
                     top: bodyheight * 0.18,
@@ -287,12 +442,10 @@ class _adddataState extends State<adddata> {
                               actions: [
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
                                       onTap: () async {
-
-                                        selectImages();
 
                                         // final ImagePicker picker =
                                         //     ImagePicker();
@@ -336,13 +489,15 @@ class _adddataState extends State<adddata> {
                                           height: 75,
                                           child: Image(
                                             image:
-                                            AssetImage("images/camera.png"),
+                                                AssetImage("images/camera.png"),
                                             fit: BoxFit.fill,
                                           )),
                                     ),
                                     InkWell(
                                       onTap: () async {
-                                        selectImages();
+
+
+
 
                                         Navigator.pop(context);
                                       },
@@ -360,7 +515,7 @@ class _adddataState extends State<adddata> {
                             );
                           },
                           animationType:
-                          DialogTransitionType.slideFromBottomFade,
+                              DialogTransitionType.slideFromBottomFade,
                           curve: Curves.fastOutSlowIn,
                           duration: Duration(seconds: 1),
                         );
@@ -385,47 +540,58 @@ class _adddataState extends State<adddata> {
                 ),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  
                   shrinkWrap: true,
-                  itemCount: imageFileList!.length,
+                  itemCount: imagelist.length,
                   itemBuilder: (context, index) {
-                    return InkWell(onTap: () {
-                      showAnimatedDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            actions: [
-                              Center(
-                                child:Container(
-                                  height: bodyheight * 0.30,
-                                  // margin: EdgeInsets.all(bodyheight*0.001),
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image:
-                                          FileImage(File(imageFileList![index].path)),
-                                          fit: BoxFit.cover),
-                                      color: Colors.yellow,
-                                      border: Border.all(width: bodyheight*0.003)),
+                    return InkWell(
+                      onTap: () async {
+                        final ImagePicker picker = ImagePicker();
+
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.gallery);
+
+                        setState(() {
+                          imagelist[index] = image!.path;
+                        });
+
+                        showAnimatedDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              actions: [
+                                Center(
+                                  child: Container(
+                                    height: bodyheight * 0.30,
+                                    // margin: EdgeInsets.all(bodyheight*0.001),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image:
+                                                FileImage(File(imagelist[index])),
+                                            fit: BoxFit.cover),
+                                        // color: Colors.yellow,
+                                        border: Border.all(
+                                            width: bodyheight * 0.003)
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                        animationType: DialogTransitionType.slideFromBottomFade,
-                        curve: Curves.fastOutSlowIn,
-                        duration: Duration(seconds: 1),
-                      );
-                    },
+                              ],
+                            );
+                          },
+                          animationType:
+                              DialogTransitionType.slideFromBottomFade,
+                          curve: Curves.fastOutSlowIn,
+                          duration: Duration(seconds: 1),
+                        );
+                      },
                       child: Container(
                         height: bodyheight * 0.30,
                         // margin: EdgeInsets.all(bodyheight*0.001),
-                        width: twidth*0.25,
+                        width: twidth * 0.25,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image:
-                                FileImage(File(imageFileList![index].path)),
+                                image: FileImage(File(selectimage[index])),
                                 fit: BoxFit.fill),
                             color: Colors.yellow,
                             shape: BoxShape.circle,
@@ -437,7 +603,22 @@ class _adddataState extends State<adddata> {
               ),
               InkWell(
                 onTap: () {
-                  selectImages();
+
+                     SelectedImage();
+
+                  // final ImagePicker picker = ImagePicker();
+                  // // Pick an image
+                  // final XFile? image =
+                  //     await picker.pickImage(source: ImageSource.gallery);
+                  //
+                  // setState(() {
+                  //   int v=0;
+                  //   selectimage = image!.path;
+                  //   imagelist[v] = selectimage;
+                  //   v++;
+                  // });
+                  // print("========${imagelist[i]}");
+                  //
                 },
                 child: Container(
                   height: bodyheight * 0.05,
@@ -565,46 +746,14 @@ class _adddataState extends State<adddata> {
                       errorText: pricestatus ? "Pls fill Details....." : null),
                 ),
               ),
-              // InkWell(onTap: () {
-              //
-              //   String name1 = name.text;
-              //   String catogary1 = catogary.text;
-              //   String details1 = details.text;
-              //   String price1 = price.text;
-              //
-              //   if (name1.isEmpty && catogary1.isEmpty && details1.isEmpty && price1.isEmpty) {
-              //     namestatus = true;
-              //     catogarystatus = true;
-              //     detailsstatus = true;
-              //     pricestatus = true;
-              //   }
-              // },
-              //   child: Container(
-              //     height: bodyheight * 0.07,
-              //     margin: EdgeInsets.fromLTRB(12, 10, bodyheight * 0.30, 0),
-              //     decoration: BoxDecoration(color: Colors.white,
-              //         border: Border.all(color: Colors.black,width: bodyheight*0.002),
-              //         borderRadius: BorderRadius.circular(bodyheight * 0.01)),
-              //     child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [Icon(
-              //       Icons.save,
-              //       color: Colors.black,
-              //     ) ,Text(
-              //         "Save",
-              //         style: TextStyle(
-              //             fontSize: bodyheight * 0.03,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.black),
-              //       ),],
-              //     ),
-              //   ),
-              // )
+
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
+        onPressed: () async {
+          print("1");
           String name1 = name.text;
           String catogary1 = catogary.text;
           String details1 = details.text;
@@ -627,6 +776,77 @@ class _adddataState extends State<adddata> {
               pricestatus = true;
             });
           }
+          else {
+            print("2");
+            for (i = 0; i < imagelist.length; i++) {
+              
+              if (imagelist[i].isNotEmpty) {
+                List<int> ii = File(imagelist[i]).readAsBytesSync();
+                imagepath[i] = base64Encode(ii);
+              }
+              else {
+
+              }
+            }
+            print("3");
+            print("==========${imagepath[0]}");
+
+            String image1 = "";
+            String image2 = "";
+            String image3 = "";
+
+            image1 = imagepath[0];
+            image2 = imagepath[1];
+            image3 = imagepath[2];
+            print("4");
+
+            Map productmap = {
+              "id": userid,
+              "names": name1,
+              "category": catogary1,
+              "description": details1,
+              "prices": price1,
+              "image1": image1,
+              "image2": image2,
+              "image3": image3,
+            };
+
+            print("okk");
+            var url = Uri.parse(
+                'https://priyadevani.000webhostapp.com/Apicalling/addproduct.php');
+            var response = await http.post(url, body: productmap);
+            print("virajjjjjjjjjjjj");
+            print('Response status: ${response.statusCode}');
+            print("mihirrrrrrrrrr");
+            print('Response body: ${response.body}');
+
+            // var add = jsonDecode(response.body);
+            //
+            // addproduct_table aa = addproduct_table.fromJson(add);
+
+            // if (aa.connection == 1) // connection
+            // {
+            //   if (aa.result == 1) // first time data store
+            //   {
+            //     ScaffoldMessenger.of(context).showSnackBar(
+            //         SnackBar(content: Text("Add Product Sucessfully...")));
+            //   } else if (aa.result == 2) {
+            //     Fluttertoast.showToast(
+            //         msg: "Data....",
+            //         toastLength: Toast.LENGTH_SHORT,
+            //         gravity: ToastGravity.CENTER,
+            //         timeInSecForIosWeb: 1,
+            //         backgroundColor: Colors.red,
+            //         textColor: Colors.white,
+            //         fontSize: 16.0);
+            //   }
+            // }
+          }
+          // Navigator.pushReplacement(context, MaterialPageRoute(
+          //   builder: (context) {
+          //     return home1();
+          //   },
+          // ));
         },
         backgroundColor: Colors.white,
         icon: Icon(
@@ -644,6 +864,11 @@ class _adddataState extends State<adddata> {
     );
   }
 
+  List<String> imagelist =[];
+  String selectimage = "";
+  List imagepath =[];
+  int i = 0;
+
   TextEditingController name = TextEditingController();
   TextEditingController catogary = TextEditingController();
   TextEditingController details = TextEditingController();
@@ -653,20 +878,45 @@ class _adddataState extends State<adddata> {
   bool catogarystatus = false;
   bool detailsstatus = false;
   bool pricestatus = false;
-  
 
-  String image = "";
+  Future<void> SelectedImage() async {
 
-  final ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = [];
+    final ImagePicker picker = ImagePicker();
 
-  void selectImages() async {
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      imageFileList!.addAll(selectedImages);
-    }
-    print("Image List Length:" + imageFileList!.length.toString());
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.gallery);
+     for(i=0; i<imagelist.length;i++)
+       {
+         if(selectimage.isNotEmpty)
+           {
+             setState(() {
+               imagelist.add(selectimage);
+               selectimage=image!.path;
+             });
+             print("==================${selectimage}");
+           }
+         else{
 
-    setState(() {});
+         }
+       }
   }
 }
+
+// class addproduct_table {
+//   int? connection;
+//   int? result;
+
+//   addproduct_table({this.connection, this.result});
+//
+//   addproduct_table.fromJson(Map<String, dynamic> json) {
+//     connection = json['connection'];
+//     result = json['result'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['connection'] = this.connection;
+//     data['result'] = this.result;
+//     return data;
+//   }
+// }
