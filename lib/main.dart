@@ -65,7 +65,7 @@ class _firstState extends State<first> {
               width: twidth,
               decoration: BoxDecoration(
                   boxShadow: [BoxShadow(color: Colors.black,blurRadius: bodyheight*0.03)]),
-              child: Card(
+              child: Card(shadowColor: Colors.grey,
                 // color: Colors.grey,
                 child: Column(
                   children: [

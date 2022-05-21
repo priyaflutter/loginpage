@@ -340,6 +340,7 @@ class _create1State extends State<create1> {
                         String mail1 = mail.text;
                         String mono1 = mono.text;
                         String pass1 = pass.text;
+
                         List<int> ii = File(img).readAsBytesSync();
                         String imagedata1 = base64Encode(ii);
 
@@ -361,6 +362,7 @@ class _create1State extends State<create1> {
                             "imagedata": imagedata1
                           };
 
+                          // search http
                           var url = Uri.parse(
                               'https://priyadevani.000webhostapp.com/Apicalling/Register.php');
                           var response = await http.post(url, body: map);
