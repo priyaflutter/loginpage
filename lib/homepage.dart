@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loginpage/createpage.dart';
+import 'package:loginpage/main.dart';
 import 'package:loginpage/splashscreen.dart';
 import 'package:loginpage/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -187,6 +188,26 @@ class _home1State extends State<home1> {
                 Icons.arrow_right,
                 size: bodyheight * 0.07,
               ),
+            ),
+            ListTile(
+              onTap: () {
+                setState(() {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                       return first();
+                  },));
+                });
+              },
+              title: Text(
+                "Log Out",
+                style: TextStyle(
+                    fontSize: bodyheight * 0.03, fontWeight: FontWeight.bold),
+              ),
+              leading: Icon(
+                Icons.lock,
+                size: bodyheight * 0.05,
+              ),
+              
             )
           ],
         )),
@@ -361,10 +382,17 @@ class _ViewdataState extends State<Viewdata> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+          return view1();
+        },));
+      },),
     );
   }
 
   TextEditingController search = TextEditingController();
+
+
 }
 
 class adddata extends StatefulWidget {
@@ -676,12 +704,14 @@ class _adddataState extends State<adddata> {
                     fontSize: 16.0);
               }
             }
+
+
           }
-          // Navigator.pushReplacement(context, MaterialPageRoute(
-          //   builder: (context) {
-          //     return home1();
-          //   },
-          // ));
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) {
+              return view1();
+            },
+          ));
         },
         backgroundColor: Colors.white,
         icon: Icon(
@@ -736,3 +766,12 @@ class addproduct_table {
     return data;
   }
 }
+
+
+
+
+
+
+
+
+

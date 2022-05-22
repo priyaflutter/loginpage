@@ -188,15 +188,19 @@ class _firstState extends State<first> {
                               });
                               
                               // EasyLoading.dismiss();
-                              Fluttertoast.showToast(
-                                  msg: "Login Sucessfully.....",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
 
+                              Future.delayed(Duration(seconds:4)).then((value) {
+
+                                Fluttertoast.showToast(
+                                    msg: "Login Sucessfully.....",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+
+                              }) ;
 
                             } else {
 
@@ -218,12 +222,13 @@ class _firstState extends State<first> {
                           String? password1 = ww.userdata!.password;
                           String? imagename1 = ww.userdata!.imagename;
 
+
                           splash.pref!.setBool("loginstatus", true);
 
                           splash.pref!.setString("id", id1!);
                           splash.pref!.setString("name", name1!);
                           splash.pref!.setString("email", email1!);
-                          splash.pref!.setString("contact", contact1!);
+                          splash. pref!.setString("contact", contact1!);
                           splash.pref!.setString("password", password1!);
                           splash.pref!.setString("imagename", imagename1!);
                         }
