@@ -395,6 +395,7 @@ class _create1State extends State<create1> {
                               );
                             }
                           }
+
                         }
 
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
@@ -463,7 +464,6 @@ class _create1State extends State<create1> {
   Map map = {};
   bool success = false;
 }
-
 class My_Register {
   int? connection;
   int? result;
@@ -482,6 +482,24 @@ class My_Register {
     return data;
   }
 }
+// class My_Register {
+//   int? connection;
+//   int? result;
+//
+//   My_Register({this.connection, this.result});
+//
+//   My_Register.fromJson(Map<String, dynamic> json) {
+//     connection = json['connection'];
+//     result = json['result'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['connection'] = this.connection;
+//     data['result'] = this.result;
+//     return data;
+//   }
+// }
 
 
 

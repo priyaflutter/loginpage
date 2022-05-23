@@ -59,13 +59,17 @@ class _firstState extends State<first> {
               width: twidth,
               child: Lottie.asset("animation/login.json"),
             ),
-            SizedBox(height: bodyheight*0.05,),
+            SizedBox(
+              height: bodyheight * 0.05,
+            ),
             Container(
               height: bodyheight * 0.50,
               width: twidth,
-              decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black,blurRadius: bodyheight*0.03)]),
-              child: Card(shadowColor: Colors.grey,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(color: Colors.black, blurRadius: bodyheight * 0.03)
+              ]),
+              child: Card(
+                shadowColor: Colors.grey,
                 // color: Colors.grey,
                 child: Column(
                   children: [
@@ -134,6 +138,8 @@ class _firstState extends State<first> {
                         String mail1 = mail.text;
                         String pass1 = pass.text;
 
+                        Map map1 = {"email": mail1, "passw": pass1};
+
                         // var email = mail.text;
                         // bool emailValid = RegExp(
                         //         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -149,7 +155,7 @@ class _firstState extends State<first> {
                         } else if (pass1.isEmpty) {
                           passstatus = true;
                         } else {
-                          Map map1 = {"email": mail1, "passw": pass1};
+                          print("viewwwwwwwwwwwwwwwww");
 
                           var url = Uri.parse(
                               'https://priyadevani.000webhostapp.com/Apicalling/login.php');
@@ -162,7 +168,6 @@ class _firstState extends State<first> {
 
                           if (ww.connection == 1) {
                             if (ww.result == 1) {
-
                               // LoadingFlipping.circle(
                               //   borderColor: Colors.cyan,
                               //   borderSize: 3.0,
@@ -171,26 +176,25 @@ class _firstState extends State<first> {
                               //   duration: Duration(milliseconds: 500),
                               // );
 
-                              EasyLoading.show(status: "loading...").whenComplete((){
-
+                              EasyLoading.show(status: "loading...")
+                                  .whenComplete(() {
                                 Future.delayed(Duration(seconds: 5))
                                     .then((value) {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(
-                                        builder: (context) {
-                                          return home1();
-                                        },
-                                      ));
+                                    builder: (context) {
+                                      return home1();
+                                    },
+                                  ));
 
                                   EasyLoading.dismiss();
                                 });
-                                
                               });
-                              
+
                               // EasyLoading.dismiss();
 
-                              Future.delayed(Duration(seconds:4)).then((value) {
-
+                              Future.delayed(Duration(seconds: 4))
+                                  .then((value) {
                                 Fluttertoast.showToast(
                                     msg: "Login Sucessfully.....",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -199,11 +203,8 @@ class _firstState extends State<first> {
                                     backgroundColor: Colors.red,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
-
-                              }) ;
-
+                              });
                             } else {
-
                               Fluttertoast.showToast(
                                   msg: "Envalid Email or Paswword.....",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -222,13 +223,12 @@ class _firstState extends State<first> {
                           String? password1 = ww.userdata!.password;
                           String? imagename1 = ww.userdata!.imagename;
 
-
                           splash.pref!.setBool("loginstatus", true);
 
                           splash.pref!.setString("id", id1!);
                           splash.pref!.setString("name", name1!);
                           splash.pref!.setString("email", email1!);
-                          splash. pref!.setString("contact", contact1!);
+                          splash.pref!.setString("contact", contact1!);
                           splash.pref!.setString("password", password1!);
                           splash.pref!.setString("imagename", imagename1!);
                         }

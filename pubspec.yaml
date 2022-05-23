@@ -52,7 +52,9 @@ dependencies:
   flutter_easyloading:
   loading_animations:
   multi_image_picker:
-  flutter_staggered_grid_view: 
+  flutter_staggered_grid_view:
+  awesome_dialog:
+  badges: 
 
 dev_dependencies:
   flutter_test:

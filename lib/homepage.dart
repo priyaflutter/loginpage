@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -248,7 +250,6 @@ class Viewdata extends StatefulWidget {
 }
 
 class _ViewdataState extends State<Viewdata> {
-  List<Map> list = [];
 
   List imagelist = [
     "images/fashion.jpg",
@@ -270,6 +271,22 @@ class _ViewdataState extends State<Viewdata> {
     "Surgical",
     "Toy Children & Baby",
   ];
+
+   String? userid;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    userid = splash.pref!.getString("id") ?? "";
+    setState(() {
+      
+    });
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -394,6 +411,8 @@ class _ViewdataState extends State<Viewdata> {
   }
 
   TextEditingController search = TextEditingController();
+
+
 }
 
 class adddata extends StatefulWidget {
@@ -449,40 +468,104 @@ class _adddataState extends State<adddata> {
                     width: double.infinity,
                     // decoration: BoxDecoration(border: Border.all(width: 2)),
                     child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                        itemCount: imagelist.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: imagelist.length + 1,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,),
+                          crossAxisCount: 3,
+                        ),
                         itemBuilder: (BuildContext context, int index) {
-
-                          if(imagelist.length==index) {
-
+                          if (imagelist.length == index) {
                             print("==================objeeee");
-                            return  Container(
-                              height: bodyheight * 0.10,
-                              width: twidth * 0.30,
-                              decoration: BoxDecoration(border: Border.all(width: bodyheight*0.001)),
-                              child: Icon(Icons.add,size: bodyheight*0.04,),);
+                            return Container(
+                              height: bodyheight * 0.05,
+                              width: twidth * 0.05,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: bodyheight * 0.001)),
+                              child: Icon(
+                                Icons.add,
+                                size: bodyheight * 0.04,
+                              ),
+                            );
                           }
-                          if(index<imagelist.length)
-                            {
-                              print("fdjjjjjjj===========");
-                              Container(
-                                height: bodyheight * 0.10,
-                                width: twidth * 0.30,
-                                decoration: BoxDecoration(border: Border.all(width: bodyheight*0.001)),
-                                child: Icon(Icons.add,size: bodyheight*0.04,),);
-                            }
+                          if (imagelist.length > index) {
+                            print("fdjjjjjjj===========");
+                            Container(
+                              height: bodyheight * 0.05,
+                              width: twidth * 0.10,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: bodyheight * 0.001)),
+                              child: Icon(
+                                Icons.add,
+                                size: bodyheight * 0.04,
+                              ),
+                            );
+                          }
 
-                             return  Container(
-                            height: bodyheight * 0.05,
-                            margin: EdgeInsets.all(bodyheight*0.01),
-                            width: twidth * 0.30,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: FileImage(File(imagelist[index])),
-                                    fit: BoxFit.fill),
-                                border: Border.all(width: 1)),
+                          return InkWell(
+                            onTap: () {
+                              print("onpreeeeeeeeeeeee");
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.QUESTION,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title:
+                                    'Do you Want to Edit Product........',
+                                btnCancelOnPress: () {
+                                  setState(() {
+                                    imagelist[index] = "";
+                                    print("cancelllllllllll");
+                                  });
+                                },
+                                btnOkOnPress: () async {
+                                  final ImagePicker picker = ImagePicker();
+
+                                  final XFile? image = await picker.pickImage(
+                                      source: ImageSource.gallery);
+
+                                  setState(() {
+                                    print("blankkkkk");
+                                    imagelist.replaceRange(
+                                        index, index + 1, [image!.path]);
+                                    print("============${imagelist}");
+                                  });
+                                },
+                              )..show();
+                            },
+                            child: Stack(
+                              children: [Container(
+                                height: bodyheight * 0.30,
+                                margin: EdgeInsets.all(bodyheight * 0.01),
+                                width: twidth * 0.30,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: FileImage(File(imagelist[index])),
+                                        fit: BoxFit.fill),
+                                    border: Border.all(width: 1)),
+
+                              ),Positioned(
+                                top: bodyheight*0.001,
+                                right: twidth*0.01,
+                                child: GestureDetector(
+                                  onTap: () {
+
+                                    setState(() {
+                                      imagelist[index] = "";
+                                      print("cancelllllllllll");
+                                    });
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: CircleAvatar(
+                                      radius: 14.0,
+                                      backgroundColor: Colors.white,
+                                      child: Icon(Icons.close, color: Colors.red),
+                                    ),
+                                  ),
+                                ),
+                              ),],
+                            ),
                           );
                         }),
                     // ListView.builder(
@@ -526,24 +609,25 @@ class _adddataState extends State<adddata> {
                     //
                     // ),
                   ),
-                  InkWell(onTap: () async {
-                    final ImagePicker picker = ImagePicker();
+                  InkWell(
+                    onTap: () async {
+                      final ImagePicker picker = ImagePicker();
 
-                            final XFile? image =
-                                await picker.pickImage(source: ImageSource.gallery);
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
 
-                            setState(() {
-                              
-                                          imagelist.add(image!.path);
-                                          print("============${imagelist}");
-                                     
-                            });
-                  },
+                      setState(() {
+                        imagelist.add(image!.path);
+                        print("============${imagelist}");
+                      });
+                    },
                     child: Container(
                       height: bodyheight * 0.05,
                       child: Text(
                         "Add Images",
-                        style: TextStyle(fontSize: bodyheight * 0.03,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: bodyheight * 0.03,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -659,7 +743,29 @@ class _adddataState extends State<adddata> {
                               pricestatus ? "Pls fill Details....." : null),
                     ),
                   ),
-                  
+                  Container(
+                    height: bodyheight * 0.10,
+                    margin: EdgeInsets.fromLTRB(10, 10, bodyheight * 0.25, 0),
+                    child: TextField(
+                      onChanged: (value) {},
+                      controller: disprice,
+                      decoration: InputDecoration(
+                        prefixIconColor: Colors.black,
+                        prefixIcon: Icon(
+                          Icons.attach_money_sharp,
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        labelText: "Discount Price",
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2)),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -673,6 +779,7 @@ class _adddataState extends State<adddata> {
           String catogary1 = catogary.text;
           String details1 = details.text;
           String price1 = price.text;
+          String discountprice = disprice.text;
 
           if (name1.isEmpty) {
             setState(() {
@@ -694,6 +801,7 @@ class _adddataState extends State<adddata> {
             print("2");
             for (i = 0; i < imagelist.length; i++) {
               if (imagelist[i].isNotEmpty) {
+                print("11111111111=========${imagelist}");
                 List<int> ii = File(imagelist[i]).readAsBytesSync();
                 imagepath[i] = base64Encode(ii);
               } else {
@@ -723,6 +831,7 @@ class _adddataState extends State<adddata> {
               "image1": image1,
               "image2": image2,
               "image3": image3,
+              "disprice": discountprice,
             };
 
             print("okk");
@@ -782,18 +891,16 @@ class _adddataState extends State<adddata> {
   TextEditingController catogary = TextEditingController();
   TextEditingController details = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController disprice = TextEditingController();
 
   bool namestatus = false;
   bool catogarystatus = false;
   bool detailsstatus = false;
   bool pricestatus = false;
 
-  List imagelist =[];
-  // List<String> imagelist = List.filled(6, "");
-  List<XFile>? images1 = [];
-  List imagepath = List.filled(5, "");
+  List imagelist = [];
+  List imagepath = List.filled(6, "");
   int i = 0;
-  List imageselectlist =["","","","","",""];
 }
 
 class addproduct_table {
