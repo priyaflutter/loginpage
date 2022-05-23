@@ -193,9 +193,11 @@ class _home1State extends State<home1> {
               onTap: () {
                 setState(() {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                       return first();
-                  },));
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                      return first();
+                    },
+                  ));
                 });
               },
               title: Text(
@@ -207,7 +209,6 @@ class _home1State extends State<home1> {
                 Icons.lock,
                 size: bodyheight * 0.05,
               ),
-              
             )
           ],
         )),
@@ -269,8 +270,6 @@ class _ViewdataState extends State<Viewdata> {
     "Surgical",
     "Toy Children & Baby",
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -382,17 +381,19 @@ class _ViewdataState extends State<Viewdata> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-          return view1();
-        },));
-      },),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) {
+              return view1();
+            },
+          ));
+        },
+      ),
     );
   }
 
   TextEditingController search = TextEditingController();
-
-
 }
 
 class adddata extends StatefulWidget {
@@ -403,10 +404,7 @@ class adddata extends StatefulWidget {
 }
 
 class _adddataState extends State<adddata> {
-
-
   String? userid;
-
 
   @override
   void initState() {
@@ -416,7 +414,6 @@ class _adddataState extends State<adddata> {
     userid = splash.pref!.getString("id") ?? "";
 
     setState(() {});
-
   }
 
   @override
@@ -430,54 +427,54 @@ class _adddataState extends State<adddata> {
     double bodyheight = theight - navibartheight - statusbarheight;
     return Scaffold(
       // backgroundColor: Colors.green,
-      body: SingleChildScrollView(physics: NeverScrollableScrollPhysics(),
+      body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
             height: bodyheight,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("images/cart1.gif"), fit: BoxFit.fitHeight)),
+                    image: AssetImage("images/cart1.gif"),
+                    fit: BoxFit.fitHeight)),
             child: Container(
               height: bodyheight,
               width: twidth,
-              margin: EdgeInsets.all(bodyheight*0.01),
+              margin: EdgeInsets.all(bodyheight * 0.01),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(color: Colors.white12, blurRadius: bodyheight * 0.03)
               ]),
               child: Column(
                 children: [
                   Container(
-                    height: bodyheight * 0.18,
-                    width:double.infinity,
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(width: 2)
-                    // ),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount:imagelist.length,
-                      itemBuilder: (context, index) {
+                    height: bodyheight * 0.32,
+                    width: double.infinity,
+                    // decoration: BoxDecoration(border: Border.all(width: 2)),
+                    child: GridView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        itemCount: imagelist.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,),
+                        itemBuilder: (BuildContext context, int index) {
 
-                        return InkWell(
-                          onTap: () async {
-                            final ImagePicker picker = ImagePicker();
+                          if(imagelist.length==index) {
 
-                            final XFile? image =
-                                await picker.pickImage(source: ImageSource.gallery);
-
-                            setState(() {
-                                  imagelist[index] = image!.path;
-                            });
-
-                          },
-                          child:imagelist[index] ==""?Container(
+                            print("==================objeeee");
+                            return  Container(
                               height: bodyheight * 0.10,
                               width: twidth * 0.30,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage("images/upload (2).gif"),
-                                      fit: BoxFit.fitHeight)))
-                              :Container(
+                              decoration: BoxDecoration(border: Border.all(width: bodyheight*0.001)),
+                              child: Icon(Icons.add,size: bodyheight*0.04,),);
+                          }
+                          if(index<imagelist.length)
+                            {
+                              print("fdjjjjjjj===========");
+                              Container(
+                                height: bodyheight * 0.10,
+                                width: twidth * 0.30,
+                                decoration: BoxDecoration(border: Border.all(width: bodyheight*0.001)),
+                                child: Icon(Icons.add,size: bodyheight*0.04,),);
+                            }
+
+                             return  Container(
                             height: bodyheight * 0.05,
                             margin: EdgeInsets.all(bodyheight*0.01),
                             width: twidth * 0.30,
@@ -486,14 +483,70 @@ class _adddataState extends State<adddata> {
                                     image: FileImage(File(imagelist[index])),
                                     fit: BoxFit.fill),
                                 border: Border.all(width: 1)),
-                          ),
-                        );
+                          );
+                        }),
+                    // ListView.builder(
+                    //   scrollDirection: Axis.horizontal,
+                    //   shrinkWrap: true,
+                    //   itemCount:imagelist.length,
+                    //   itemBuilder: (context, index) {
+                    //
+                    //     return InkWell(
+                    //       onTap: () async {
+                    //         final ImagePicker picker = ImagePicker();
+                    //
+                    //         final XFile? image =
+                    //             await picker.pickImage(source: ImageSource.gallery);
+                    //
+                    //         setState(() {
+                    //               imagelist[index] = image!.path;
+                    //         });
+                    //
+                    //       },
+                    //       child:imagelist[index] ==""?Container(
+                    //           height: bodyheight * 0.10,
+                    //           width: twidth * 0.30,
+                    //           decoration: BoxDecoration(
+                    //               image: DecorationImage(
+                    //                   image: AssetImage("images/upload (2).gif"),
+                    //                   fit: BoxFit.fitHeight)))
+                    //           :Container(
+                    //         height: bodyheight * 0.05,
+                    //         margin: EdgeInsets.all(bodyheight*0.01),
+                    //         width: twidth * 0.30,
+                    //         decoration: BoxDecoration(
+                    //             image: DecorationImage(
+                    //                 image: FileImage(File(imagelist[index])),
+                    //                 fit: BoxFit.fill),
+                    //             border: Border.all(width: 1)),
+                    //       ),
+                    //     );
+                    //
+                    //   },
+                    //
+                    // ),
+                  ),
+                  InkWell(onTap: () async {
+                    final ImagePicker picker = ImagePicker();
 
-                      },
+                            final XFile? image =
+                                await picker.pickImage(source: ImageSource.gallery);
 
+                            setState(() {
+                              
+                                          imagelist.add(image!.path);
+                                          print("============${imagelist}");
+                                     
+                            });
+                  },
+                    child: Container(
+                      height: bodyheight * 0.05,
+                      child: Text(
+                        "Add Images",
+                        style: TextStyle(fontSize: bodyheight * 0.03,fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-
                   Container(
                     height: bodyheight * 0.10,
                     margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -511,13 +564,15 @@ class _adddataState extends State<adddata> {
                             color: Colors.black,
                           ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Product Name....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.black, width: 2)),
-                          errorText: namestatus ? "Pls fill Details....." : null),
+                          errorText:
+                              namestatus ? "Pls fill Details....." : null),
                     ),
                   ),
                   Container(
@@ -537,7 +592,8 @@ class _adddataState extends State<adddata> {
                             color: Colors.black,
                           ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Catogary....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
@@ -564,7 +620,8 @@ class _adddataState extends State<adddata> {
                             color: Colors.black,
                           ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Description....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
@@ -576,7 +633,7 @@ class _adddataState extends State<adddata> {
                   ),
                   Container(
                     height: bodyheight * 0.10,
-                    margin: EdgeInsets.fromLTRB(10, 10, bodyheight*0.25, 0),
+                    margin: EdgeInsets.fromLTRB(10, 10, bodyheight * 0.25, 0),
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -591,16 +648,18 @@ class _adddataState extends State<adddata> {
                             color: Colors.black,
                           ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Price....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.black, width: 2)),
-                          errorText: pricestatus ? "Pls fill Details....." : null),
+                          errorText:
+                              pricestatus ? "Pls fill Details....." : null),
                     ),
                   ),
-
+                  
                 ],
               ),
             ),
@@ -631,28 +690,20 @@ class _adddataState extends State<adddata> {
             setState(() {
               pricestatus = true;
             });
-          }
-          else {
+          } else {
             print("2");
             for (i = 0; i < imagelist.length; i++) {
-
-              if(imagelist[i].isNotEmpty)
-                {
-                  List<int> ii = File(imagelist[i]).readAsBytesSync();
-                  imagepath[i] = base64Encode(ii);
-                }
-              else{
+              if (imagelist[i].isNotEmpty) {
+                List<int> ii = File(imagelist[i]).readAsBytesSync();
+                imagepath[i] = base64Encode(ii);
+              } else {
                 print("Nothing.......");
               }
-
-
-
             }
             print("3");
             print("1==========${imagepath[0]}");
             print("2==========${imagepath[1]}");
             print("3==========${imagepath[2]}");
-
 
             String image1 = "";
             String image2 = "";
@@ -704,8 +755,6 @@ class _adddataState extends State<adddata> {
                     fontSize: 16.0);
               }
             }
-
-
           }
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) {
@@ -729,7 +778,6 @@ class _adddataState extends State<adddata> {
     );
   }
 
-
   TextEditingController name = TextEditingController();
   TextEditingController catogary = TextEditingController();
   TextEditingController details = TextEditingController();
@@ -740,12 +788,12 @@ class _adddataState extends State<adddata> {
   bool detailsstatus = false;
   bool pricestatus = false;
 
-  List<String> imagelist=List.filled(5, "");
-  List<XFile>? images1=[];
-  List imagepath =List.filled(5,"");
+  List imagelist =[];
+  // List<String> imagelist = List.filled(6, "");
+  List<XFile>? images1 = [];
+  List imagepath = List.filled(5, "");
   int i = 0;
-
-
+  List imageselectlist =["","","","","",""];
 }
 
 class addproduct_table {
@@ -766,12 +814,3 @@ class addproduct_table {
     return data;
   }
 }
-
-
-
-
-
-
-
-
-

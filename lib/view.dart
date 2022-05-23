@@ -13,37 +13,51 @@ class view1 extends StatefulWidget {
 }
 
 class _adddataState extends State<view1> {
-  String? id;
-  String? userid;
-  String? image;
-  String? image2;
-  String? image3;
-  String? productname;
-  String? catogary;
-  String? description;
-  String? price;
+  List productid = [];
+  List image1 = [];
+  List image2 = [];
+  List image3 = [];
+  List name1 = [];
+  List catogary1 = [];
+  List details1 = [];
+  List price1 = [];
+
+  int productlength = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     myviewdata();
-    view();
   }
 
+  myviewdata() async {
+    String userid = splash.pref!.getString("id") ?? "";
 
+    Map mapp = {"id": userid};
 
-  void view() {
-    image = splash.pref!.getString("idd") ?? "";
-    image = splash.pref!.getString("image1") ?? "";
-    image = splash.pref!.getString("image2") ?? "";
-    image = splash.pref!.getString("image3") ?? "";
-    image = splash.pref!.getString("productname") ?? "";
-    image = splash.pref!.getString("catogary") ?? "";
-    image = splash.pref!.getString("description") ?? "";
-    image = splash.pref!.getString("price") ?? "";
+    var url = Uri.parse(
+        'https://priyadevani.000webhostapp.com/Apicalling/addproduct.php');
+    var response = await http.post(url, body: mapp);
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
-    setState(() {});
+    var viewdata1 = jsonDecode(response.body);
+    View_Product vvv = View_Product.fromJson(viewdata1);
+
+    setState(() {
+      productlength = vvv.productdata!.length;
+    });
+
+    for (int i = 0; i < productlength; i++) {
+      productid.add(vvv.productdata![i].id);
+      name1.add(vvv.productdata![i].productname);
+      details1.add(vvv.productdata![i].description);
+      price1.add(vvv.productdata![i].price);
+      image1.add(vvv.productdata![i].image);
+      image2.add(vvv.productdata![i].image2);
+      image3.add(vvv.productdata![i].image3);
+    }
   }
 
   @override
@@ -61,7 +75,8 @@ class _adddataState extends State<view1> {
         title: Text("data"),
       ),
       // backgroundColor: Colors.green,
-      body: SingleChildScrollView(
+      body: Container(
+        height: bodyheight,
         child: Column(
           children: [
             Container(
@@ -89,48 +104,57 @@ class _adddataState extends State<view1> {
             Container(
               height: bodyheight * 0.85,
               width: double.infinity,
-              decoration: BoxDecoration(border: Border.all(width: 1)),
+              // decoration: BoxDecoration(border: Border.all(width: 1)),
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: productlength,
                 itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      Container(
-                        height: bodyheight * 0.45,
-                        width: twidth * 0.44,
-                        padding: EdgeInsets.all(bodyheight*0.001),
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1),
-                          image: DecorationImage(
-                              image: FileImage(File("")), fit: BoxFit.fill),
+                  return Container(
+                    height: bodyheight * 0.30,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: bodyheight * 0.01)),
+                    child: Row(
+                      children: [
+                        Card(
+                          child: Container(
+                            height: bodyheight * 0.25,
+                            width: twidth * 0.30,
+                            margin: EdgeInsets.all(bodyheight * 0.01),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://priyadevani.000webhostapp.com/Apicalling/${image1[index]}'),
+                                    fit: BoxFit.fill)),
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: bodyheight * 0.45,
-                        width: twidth * 0.55,
-                        decoration: BoxDecoration(border: Border.all(width: 1)),
-                        child: Column(
-                          children: [
-                            Text(
-                              "${productname}",
-                              style: TextStyle(
-                                  fontSize: bodyheight * 0.05,
-                                  fontWeight: FontWeight.bold),
-                            ),Text(
-                              "${description}",
-                              style: TextStyle(
-                                  fontSize: bodyheight * 0.05,
-                                  fontWeight: FontWeight.bold),
-                            ),Text(
-                              "${price}",
-                              style: TextStyle(
-                                  fontSize: bodyheight * 0.05,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                        Container(
+                          height: bodyheight * 0.25,
+                          width: twidth*0.30,
+                          child: Column(
+                            children: [
+                              Text(
+                                "${name1[index]}",
+                                style: TextStyle(
+                                    fontSize: bodyheight * 0.03,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${details1[index]}",
+                                style: TextStyle(
+                                    fontSize: bodyheight * 0.03,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Rs.${price1[index]}/-",
+                                style: TextStyle(
+                                    fontSize: bodyheight * 0.03,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   );
                 },
               ),
@@ -151,63 +175,6 @@ class _adddataState extends State<view1> {
   }
 
   TextEditingController search = TextEditingController();
-}
-
-Future<void> myviewdata() async {
-
-  String? id;
-  String? userid;
-  String? image;
-  String? image2;
-  String? image3;
-  String? productname;
-  String? catogary;
-  String? description;
-  String? price;
-
-
-  Map mapp ={
-    "id" : id,
-    "loginid":userid,
-    "image1":image,
-    "image2":image2,
-    "image3":image3,
-    "productname":productname,
-    "cato": catogary,
-    "descri":description,
-    "price":price
-  };
-
-  var url = Uri.parse(
-      'https://priyadevani.000webhostapp.com/Apicalling/addproduct.php');
-  var response = await http.post(url, body: mapp);
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
-
-  var viewdata1 = jsonDecode(response.body);
-  View_Product vvv = View_Product.fromJson(viewdata1);
-
-    String? id2=vvv.productdata![0].id;
-    String? userid2=vvv.productdata![0].userid;
-    String? image12=vvv.productdata![0].image;
-    String? image22=vvv.productdata![0].image2;
-    String? image32=vvv.productdata![0].image3;
-    String? productname2=vvv.productdata![0].productname;
-    String? catogary2=vvv.productdata![0].catogary;
-    String? description2=vvv.productdata![0].description;
-    String? price2=vvv.productdata![0].price;
-
-    splash.pref!.setString("idd",id2!);
-    splash.pref!.setString("loginid",userid2!);
-    splash.pref!.setString("image1",image12!);
-    splash.pref!.setString("image2",image22!);
-    splash.pref!.setString("image3",image32!);
-    splash.pref!.setString("productname",productname2!);
-    splash.pref!.setString("catogary",catogary2!);
-    splash.pref!.setString("description",description2!);
-    splash.pref!.setString("price",price2!);
-
-
 }
 
 class View_Product {
@@ -252,14 +219,14 @@ class Productdata {
 
   Productdata(
       {this.id,
-        this.userid,
-        this.image,
-        this.image2,
-        this.image3,
-        this.productname,
-        this.catogary,
-        this.description,
-        this.price});
+      this.userid,
+      this.image,
+      this.image2,
+      this.image3,
+      this.productname,
+      this.catogary,
+      this.description,
+      this.price});
 
   Productdata.fromJson(Map<String, dynamic> json) {
     id = json['id'];
