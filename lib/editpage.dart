@@ -11,28 +11,52 @@ import 'package:loginpage/view.dart';
 import 'package:http/http.dart' as http;
 
 class edit extends StatefulWidget {
-  const edit({Key? key}) : super(key: key);
+  String image1;
+  String image2;
+  String image3;
+  String name1;
+  String details1;
+  String price1;
+  String discountprice;
+  String catogary1;
+
+
+  edit(this.image1, this.image2, this.image3, this.name1, this.details1,
+      this.price1, this.discountprice, this.catogary1);
 
   @override
   State<edit> createState() => _editState();
 }
 
 class _editState extends State<edit> {
-
   String? userid;
-
+  List newimagelist = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-     userid = splash.pref!.getString('id')??"";
-    setState(() { });
+    userid = splash.pref!.getString('id') ?? "";
+    setState(() {});
+    newimagelist = [widget.image1, widget.image2, widget.image3, "", "", ""];
+    String name1 = widget.name1;
+    name.text = name1;
+    String price1 = widget.price1;
+    price.text = price1;
+    String details1 = widget.details1;
+    details.text = details1;
+    String disprice1 = widget.discountprice;
+    disprice.text = disprice1;
+    String catogary11=widget.catogary1;
+    catogary.text=catogary11;
+
+
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
-
     double theight = MediaQuery.of(context).size.height;
     double twidth = MediaQuery.of(context).size.width;
     double statusbarheight = MediaQuery.of(context).padding.top;
@@ -61,7 +85,7 @@ class _editState extends State<edit> {
               child: Column(
                 children: [
                   Container(
-                    height: bodyheight * 0.32,
+                    height: bodyheight * 0.33,
                     width: double.infinity,
                     // decoration: BoxDecoration(border: Border.all(width: 2)),
                     child: GridView.builder(
@@ -78,8 +102,7 @@ class _editState extends State<edit> {
                                 context: context,
                                 dialogType: DialogType.QUESTION,
                                 animType: AnimType.BOTTOMSLIDE,
-                                title:
-                                'Do you Want to Edit Product........',
+                                title: 'Do you Want to Edit Product........',
                                 btnCancelOnPress: () {
                                   setState(() {
                                     imagelist[index] = "";
@@ -105,62 +128,22 @@ class _editState extends State<edit> {
                               height: bodyheight * 0.30,
                               margin: EdgeInsets.all(bodyheight * 0.01),
                               width: twidth * 0.30,
-                              decoration: BoxDecoration(color: Colors.red,
+                              decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: FileImage(File(imagelist[index])),
+                                      image: NetworkImage(
+                                          'https://priyadevani.000webhostapp.com/Apicalling/${newimagelist[index]}'),
                                       fit: BoxFit.fill),
                                   border: Border.all(width: 1)),
-
                             ),
                           );
                         }),
-                    // ListView.builder(
-                    //   scrollDirection: Axis.horizontal,
-                    //   shrinkWrap: true,
-                    //   itemCount:imagelist.length,
-                    //   itemBuilder: (context, index) {
-                    //
-                    //     return InkWell(
-                    //       onTap: () async {
-                    //         final ImagePicker picker = ImagePicker();
-                    //
-                    //         final XFile? image =
-                    //             await picker.pickImage(source: ImageSource.gallery);
-                    //
-                    //         setState(() {
-                    //               imagelist[index] = image!.path;
-                    //         });
-                    //
-                    //       },
-                    //       child:imagelist[index] ==""?Container(
-                    //           height: bodyheight * 0.10,
-                    //           width: twidth * 0.30,
-                    //           decoration: BoxDecoration(
-                    //               image: DecorationImage(
-                    //                   image: AssetImage("images/upload (2).gif"),
-                    //                   fit: BoxFit.fitHeight)))
-                    //           :Container(
-                    //         height: bodyheight * 0.05,
-                    //         margin: EdgeInsets.all(bodyheight*0.01),
-                    //         width: twidth * 0.30,
-                    //         decoration: BoxDecoration(
-                    //             image: DecorationImage(
-                    //                 image: FileImage(File(imagelist[index])),
-                    //                 fit: BoxFit.fill),
-                    //             border: Border.all(width: 1)),
-                    //       ),
-                    //     );
-                    //
-                    //   },
-                    //
-                    // ),
                   ),
                   InkWell(
                     onTap: () async {
                       final ImagePicker picker = ImagePicker();
 
                       final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                          await picker.pickImage(source: ImageSource.gallery);
 
                       setState(() {
                         imagelist.add(image!.path);
@@ -170,7 +153,7 @@ class _editState extends State<edit> {
                     child: Container(
                       height: bodyheight * 0.05,
                       child: Text(
-                        "Add Images",
+                        "",
                         style: TextStyle(
                             fontSize: bodyheight * 0.03,
                             fontWeight: FontWeight.bold),
@@ -182,9 +165,7 @@ class _editState extends State<edit> {
                     margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
                     child: TextField(
                       onChanged: (value) {
-                        setState(() {
-                          namestatus = false;
-                        });
+                        setState(() {});
                       },
                       controller: name,
                       decoration: InputDecoration(
@@ -195,14 +176,14 @@ class _editState extends State<edit> {
                           ),
                           border: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20))),
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Product Name....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black, width: 2)),
+                                  BorderSide(color: Colors.black, width: 2)),
                           errorText:
-                          namestatus ? "Pls fill Details....." : null),
+                              namestatus ? "Pls fill Details....." : null),
                     ),
                   ),
                   Container(
@@ -223,14 +204,14 @@ class _editState extends State<edit> {
                           ),
                           border: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20))),
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Catogary....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black, width: 2)),
+                                  BorderSide(color: Colors.black, width: 2)),
                           errorText:
-                          catogarystatus ? "Pls fill Details....." : null),
+                              catogarystatus ? "Pls fill Details....." : null),
                     ),
                   ),
                   Container(
@@ -251,14 +232,14 @@ class _editState extends State<edit> {
                           ),
                           border: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20))),
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Enter Description....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black, width: 2)),
+                                  BorderSide(color: Colors.black, width: 2)),
                           errorText:
-                          detailsstatus ? "Pls fill Details....." : null),
+                              detailsstatus ? "Pls fill Details....." : null),
                     ),
                   ),
                   Container(
@@ -279,14 +260,14 @@ class _editState extends State<edit> {
                           ),
                           border: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20))),
+                                  BorderRadius.all(Radius.circular(20))),
                           labelText: "Price....",
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black, width: 2)),
+                                  BorderSide(color: Colors.black, width: 2)),
                           errorText:
-                          pricestatus ? "Pls fill Details....." : null),
+                              pricestatus ? "Pls fill Details....." : null),
                     ),
                   ),
                   Container(
@@ -303,12 +284,12 @@ class _editState extends State<edit> {
                         ),
                         border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20))),
+                                BorderRadius.all(Radius.circular(20))),
                         labelText: "Discount Price",
                         labelStyle: TextStyle(color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.black, width: 2)),
+                                BorderSide(color: Colors.black, width: 2)),
                       ),
                     ),
                   ),
@@ -394,9 +375,9 @@ class _editState extends State<edit> {
             addproduct_table aa = addproduct_table.fromJson(add);
 
             if (aa.connection == 1) // connection
-                {
+            {
               if (aa.result == 1) // first time data store
-                  {
+              {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Add Product Sucessfully...")));
               } else if (aa.result == 2) {
@@ -444,93 +425,7 @@ class _editState extends State<edit> {
   bool detailsstatus = false;
   bool pricestatus = false;
 
-  List imagelist =["","","",""];
+  List imagelist = ["", "", "", "", "", ""];
   List imagepath = List.filled(6, "");
   int i = 0;
 }
-
-class View_Product {
-  int? connection;
-  int? result;
-  List<Productdata>? productdata;
-
-  View_Product({this.connection, this.result, this.productdata});
-
-  View_Product.fromJson(Map<String, dynamic> json) {
-    connection = json['connection'];
-    result = json['result'];
-    if (json['productdata'] != null) {
-      productdata = <Productdata>[];
-      json['productdata'].forEach((v) {
-        productdata!.add(new Productdata.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['connection'] = this.connection;
-    data['result'] = this.result;
-    if (this.productdata != null) {
-      data['productdata'] = this.productdata!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Productdata {
-  String? id;
-  String? userid;
-  String? image;
-  String? image2;
-  String? image3;
-  String? productname;
-  String? catogary;
-  String? description;
-  String? price;
-  String? discountprice;
-
-  Productdata(
-      {this.id,
-        this.userid,
-        this.image,
-        this.image2,
-        this.image3,
-        this.productname,
-        this.catogary,
-        this.description,
-        this.price,
-        this.discountprice});
-
-  Productdata.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userid = json['userid'];
-    image = json['image'];
-    image2 = json['image2'];
-    image3 = json['image3'];
-    productname = json['productname'];
-    catogary = json['catogary'];
-    description = json['description'];
-    price = json['price'];
-    discountprice = json['discountprice'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['userid'] = this.userid;
-    data['image'] = this.image;
-    data['image2'] = this.image2;
-    data['image3'] = this.image3;
-    data['productname'] = this.productname;
-    data['catogary'] = this.catogary;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['discountprice'] = this.discountprice;
-    return data;
-  }
-}
-
-
-
-

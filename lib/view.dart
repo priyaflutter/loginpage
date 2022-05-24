@@ -26,7 +26,8 @@ class _adddataState extends State<view1> {
 
   int productlength = 0;
 
-  Map mapp={};
+  Map mapp = {};
+
   @override
   void initState() {
     // TODO: implement initState
@@ -61,6 +62,7 @@ class _adddataState extends State<view1> {
       image2.add(vvv.productdata![i].image2);
       image3.add(vvv.productdata![i].image3);
       discountprice.add(vvv.productdata![i].discountprice);
+      catogary1.add(vvv.productdata![i].catogary);
     }
   }
 
@@ -113,12 +115,24 @@ class _adddataState extends State<view1> {
                 child: ListView.builder(
                   itemCount: productlength,
                   itemBuilder: (context, index) {
-                    return InkWell(onTap: () {
-                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return edit(
+                              image1[index],
+                              image2[index],
+                              image3[index],
+                              name1[index],
+                              details1[index],
+                              price1[index],
+                              discountprice[index],
+                              catogary1[index],
 
-                                return edit();
-                      },));
-                    },
+                            );
+                          },
+                        ));
+                      },
                       child: Container(
                         height: bodyheight * 0.30,
                         width: double.infinity,
@@ -142,13 +156,21 @@ class _adddataState extends State<view1> {
                               child: Container(
                                 height: bodyheight * 0.25,
                                 width: twidth * 0.50,
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "  ${name1[index]}",
                                       style: TextStyle(
+                                        fontSize: bodyheight * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "  ${catogary1[index]}",
+                                      style: TextStyle(
                                           fontSize: bodyheight * 0.03,
-                                          fontWeight: FontWeight.bold,),
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       "  ${details1[index]}",
