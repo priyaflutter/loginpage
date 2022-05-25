@@ -7,6 +7,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -281,6 +282,8 @@ class _ViewdataState extends State<Viewdata> {
     super.initState();
 
     userid = splash.pref!.getString("id") ?? "";
+
+    Map map1 = {"category":catogaryy};
     setState(() {
       
     });
@@ -400,11 +403,20 @@ class _ViewdataState extends State<Viewdata> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) {
-              return view1();
-            },
-          ));
+          EasyLoading.show(status: "loading...")
+              .whenComplete(() {
+            Future.delayed(Duration(seconds: 5))
+                .then((value) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return view1();
+                    },
+                  ));
+
+              EasyLoading.dismiss();
+            });
+          });
         },
       ),
     );
@@ -697,6 +709,7 @@ class _adddataState extends State<adddata> {
                         });
                       },
                       controller: details,
+                      maxLines: 10,
                       decoration: InputDecoration(
                           prefixIconColor: Colors.black,
                           prefixIcon: Icon(

@@ -54,7 +54,8 @@ dependencies:
   multi_image_picker:
   flutter_staggered_grid_view:
   awesome_dialog:
-  badges: 
+  badges:
+  carousel_slider: 
 
 dev_dependencies:
   flutter_test:

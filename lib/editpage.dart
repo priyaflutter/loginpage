@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loginpage/homepage.dart';
@@ -19,10 +21,10 @@ class edit extends StatefulWidget {
   String price1;
   String discountprice;
   String catogary1;
-
+  String productid;
 
   edit(this.image1, this.image2, this.image3, this.name1, this.details1,
-      this.price1, this.discountprice, this.catogary1);
+      this.price1, this.discountprice, this.catogary1, this.productid);
 
   @override
   State<edit> createState() => _editState();
@@ -30,7 +32,8 @@ class edit extends StatefulWidget {
 
 class _editState extends State<edit> {
   String? userid;
-  List newimagelist = [];
+
+
 
   @override
   void initState() {
@@ -38,8 +41,10 @@ class _editState extends State<edit> {
     super.initState();
 
     userid = splash.pref!.getString('id') ?? "";
+
     setState(() {});
-    newimagelist = [widget.image1, widget.image2, widget.image3, "", "", ""];
+    print("imageeeeeeeeeeeeeeeeeee");
+    imagelist = [widget.image1, widget.image2, widget.image3, "", "", ""];
     String name1 = widget.name1;
     name.text = name1;
     String price1 = widget.price1;
@@ -48,9 +53,8 @@ class _editState extends State<edit> {
     details.text = details1;
     String disprice1 = widget.discountprice;
     disprice.text = disprice1;
-    String catogary11=widget.catogary1;
-    catogary.text=catogary11;
-
+    String catogary11 = widget.catogary1;
+    catogary.text = catogary11;
 
     setState(() {});
   }
@@ -88,78 +92,471 @@ class _editState extends State<edit> {
                     height: bodyheight * 0.33,
                     width: double.infinity,
                     // decoration: BoxDecoration(border: Border.all(width: 2)),
-                    child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                    child:
+
+                    // GridView.builder(
+                    //     physics: NeverScrollableScrollPhysics(),
+                    //     itemCount:imagelist.length,
+                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //       crossAxisCount: 3,
+                    //     ),
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       print("networkimageeeeeeeeeeeee");
+                    //       return InkWell(
+                    //           onTap: () {
+                    //             print("onpreeeeeeeeeeeee");
+                    //             showAnimatedDialog(
+                    //               context: context,
+                    //               barrierDismissible: true,
+                    //               builder: (BuildContext context) {
+                    //                 return Stack(
+                    //                   children: [
+                    //                     AlertDialog(
+                    //                       backgroundColor: Colors.white30,
+                    //                       actions: [
+                    //                         Container(
+                    //                           height: bodyheight * 0.10,
+                    //                           width: twidth,
+                    //                           margin: EdgeInsets.all(
+                    //                               bodyheight * 0.01),
+                    //                           decoration: BoxDecoration(),
+                    //                           child: Center(
+                    //                             child: Text(
+                    //                               "Do you want to Edit or Delete..",
+                    //                               style: TextStyle(
+                    //                                   fontSize: bodyheight * 0.03,
+                    //                                   color: Colors.black,
+                    //                                   fontWeight:
+                    //                                   FontWeight.bold),
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                         InkWell(
+                    //                           onTap: () async {
+                    //
+                    //                             Navigator.pop(context);
+                    //                             final ImagePicker picker =
+                    //                             ImagePicker();
+                    //
+                    //                             final XFile? image1 =
+                    //                             await picker.pickImage(source: ImageSource.gallery);
+                    //
+                    //
+                    //                             if(imagelist[index]=="")
+                    //                             {
+                    //                               setState(() {
+                    //                                 print("blankkkkk");
+                    //                                 print(index);
+                    //                                 imagelist[index]=image1!.path;
+                    //                                 print("============${imagelist[index]}");
+                    //                               });
+                    //                             }
+                    //
+                    //
+                    //                           },
+                    //                           child: Card(
+                    //                             child: Container(
+                    //                               height: bodyheight * 0.10,
+                    //                               margin: EdgeInsets.all(
+                    //                                   bodyheight * 0.01),
+                    //                               width: twidth,
+                    //                               decoration: BoxDecoration(
+                    //                                   color: Color(0xffd5baba),
+                    //                                   borderRadius:
+                    //                                   BorderRadius.circular(
+                    //                                       bodyheight * 0.01)),
+                    //                               // decoration: BoxDecoration(color: Colors.yellow),
+                    //                               child: Row(
+                    //                                 mainAxisAlignment:
+                    //                                 MainAxisAlignment
+                    //                                     .spaceEvenly,
+                    //                                 children: [
+                    //                                   Container(
+                    //                                     decoration: BoxDecoration(
+                    //                                       shape: BoxShape.circle,
+                    //                                     ),
+                    //                                     child: Icon(
+                    //                                       Icons.edit,
+                    //                                       size: bodyheight * 0.04,
+                    //                                     ),
+                    //                                   ),
+                    //                                   Text(
+                    //                                     "Edit          ",
+                    //                                     style: TextStyle(
+                    //                                         fontSize:
+                    //                                         bodyheight * 0.03,
+                    //                                         fontWeight:
+                    //                                         FontWeight.w900),
+                    //                                   ),
+                    //                                 ],
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                         InkWell(
+                    //                           onTap: () {
+                    //                             Navigator.pop(context);
+                    //                             setState(() {
+                    //                               imagelist[index] = "";
+                    //                               print("cancelllllllllll");
+                    //                             });
+                    //                           },
+                    //                           child: Card(
+                    //                             child: Container(
+                    //                               height: bodyheight * 0.10,
+                    //                               margin: EdgeInsets.all(
+                    //                                   bodyheight * 0.01),
+                    //                               width: twidth,
+                    //                               decoration: BoxDecoration(
+                    //                                   color: Color(0xffd5baba),
+                    //                                   borderRadius:
+                    //                                   BorderRadius.circular(
+                    //                                       bodyheight * 0.01)),
+                    //                               // decoration: BoxDecoration(color: Colors.yellow),
+                    //                               child: Row(
+                    //                                 mainAxisAlignment:
+                    //                                 MainAxisAlignment
+                    //                                     .spaceEvenly,
+                    //                                 children: [
+                    //                                   Container(
+                    //                                     decoration: BoxDecoration(
+                    //                                       shape: BoxShape.circle,
+                    //                                     ),
+                    //                                     child: Icon(
+                    //                                       Icons.delete_forever,
+                    //                                       size: bodyheight * 0.04,
+                    //                                     ),
+                    //                                   ),
+                    //                                   Text(
+                    //                                     " Delete      ",
+                    //                                     style: TextStyle(
+                    //                                         fontSize:
+                    //                                         bodyheight * 0.03,
+                    //                                         fontWeight:
+                    //                                         FontWeight.w900),
+                    //                                   ),
+                    //                                 ],
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                     Positioned(
+                    //                       top: bodyheight * 0.30,
+                    //                       right: twidth * 0.10,
+                    //                       child: GestureDetector(
+                    //                         onTap: () {
+                    //                           Navigator.of(context).pop();
+                    //                         },
+                    //                         child: Align(
+                    //                           alignment: Alignment.topRight,
+                    //                           child: CircleAvatar(
+                    //                             radius: 14.0,
+                    //                             backgroundColor: Colors.white,
+                    //                             child: Icon(Icons.close,
+                    //                                 color: Colors.red),
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 );
+                    //               },
+                    //               animationType:
+                    //               DialogTransitionType.slideFromBottomFade,
+                    //               curve: Curves.fastOutSlowIn,
+                    //               duration: Duration(seconds: 1),
+                    //             );
+                    //           },
+                    //           child:Container(
+                    //             height: bodyheight * 0.30,
+                    //             margin: EdgeInsets.all(bodyheight * 0.01),
+                    //             width: twidth * 0.30,
+                    //             decoration:BoxDecoration(
+                    //                 image: DecorationImage(
+                    //                     image: NetworkImage(
+                    //                         'https://priyadevani.000webhostapp.com/Apicalling/${imagelist[index]}'),
+                    //                     fit: BoxFit.fill),
+                    //                 border: Border.all(width: 1)),
+                    //           ));
+                    //       // Container(
+                    //       //   height: bodyheight * 0.30,
+                    //       //   margin: EdgeInsets.all(bodyheight * 0.01),
+                    //       //   width: twidth * 0.30,
+                    //       //   decoration: BoxDecoration(
+                    //       //       image: DecorationImage(
+                    //       //           image: NetworkImage(
+                    //       //               'https://priyadevani.000webhostapp.com/Apicalling/${newimagelist[index]}'),
+                    //       //           fit: BoxFit.fill),
+                    //       //       border: Border.all(width: 1)),
+                    //       // ),
+                    //     }),
+
+                    CarouselSlider.builder(
                         itemCount: imagelist.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
+                        itemBuilder: (context, index, realIndex) {
+
                           return InkWell(
-                            onTap: () {
-                              print("onpreeeeeeeeeeeee");
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.QUESTION,
-                                animType: AnimType.BOTTOMSLIDE,
-                                title: 'Do you Want to Edit Product........',
-                                btnCancelOnPress: () {
-                                  setState(() {
-                                    imagelist[index] = "";
-                                    print("cancelllllllllll");
-                                  });
-                                },
-                                btnOkOnPress: () async {
-                                  final ImagePicker picker = ImagePicker();
+                              onTap: () {
+                                print("onpreeeeeeeeeeeee");
+                                showAnimatedDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return Stack(
+                                      children: [
+                                        AlertDialog(
+                                          backgroundColor: Colors.white30,
+                                          actions: [
+                                            Container(
+                                              height: bodyheight * 0.10,
+                                              width: twidth,
+                                              margin: EdgeInsets.all(
+                                                  bodyheight * 0.01),
+                                              decoration: BoxDecoration(),
+                                              child: Center(
+                                                child: Text(
+                                                  "Do you want to Edit or Delete..",
+                                                  style: TextStyle(
+                                                      fontSize: bodyheight * 0.03,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () async {
 
-                                  final XFile? image = await picker.pickImage(
-                                      source: ImageSource.gallery);
+                                                Navigator.pop(context);
+                                                final ImagePicker picker =
+                                                ImagePicker();
 
-                                  setState(() {
-                                    print("blankkkkk");
-                                    imagelist.replaceRange(
-                                        index, index + 1, [image!.path]);
-                                    print("============${imagelist}");
-                                  });
-                                },
-                              )..show();
-                            },
-                            child: Container(
-                              height: bodyheight * 0.30,
-                              margin: EdgeInsets.all(bodyheight * 0.01),
-                              width: twidth * 0.30,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://priyadevani.000webhostapp.com/Apicalling/${newimagelist[index]}'),
-                                      fit: BoxFit.fill),
-                                  border: Border.all(width: 1)),
-                            ),
-                          );
-                        }),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      final ImagePicker picker = ImagePicker();
+                                                final XFile? image1 =
+                                                await picker.pickImage(source: ImageSource.gallery);
 
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
 
-                      setState(() {
-                        imagelist.add(image!.path);
-                        print("============${imagelist}");
-                      });
+                                                if(imagelist[index]=="")
+                                                {
+                                                  setState(() {
+                                                    print("blankkkkk");
+                                                    print(index);
+                                                    imagelist[index]=image1!.path;
+                                                    print("============${imagelist[index]}");
+                                                  });
+                                                }
+
+
+                                              },
+                                              child: Card(
+                                                child: Container(
+                                                  height: bodyheight * 0.10,
+                                                  margin: EdgeInsets.all(
+                                                      bodyheight * 0.01),
+                                                  width: twidth,
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffd5baba),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          bodyheight * 0.01)),
+                                                  // decoration: BoxDecoration(color: Colors.yellow),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.edit,
+                                                          size: bodyheight * 0.04,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Edit          ",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                            bodyheight * 0.03,
+                                                            fontWeight:
+                                                            FontWeight.w900),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                setState(() {
+                                                  imagelist[index] = "";
+                                                  print("cancelllllllllll");
+                                                });
+                                              },
+                                              child: Card(
+                                                child: Container(
+                                                  height: bodyheight * 0.10,
+                                                  margin: EdgeInsets.all(
+                                                      bodyheight * 0.01),
+                                                  width: twidth,
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffd5baba),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          bodyheight * 0.01)),
+                                                  // decoration: BoxDecoration(color: Colors.yellow),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.delete_forever,
+                                                          size: bodyheight * 0.04,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        " Delete      ",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                            bodyheight * 0.03,
+                                                            fontWeight:
+                                                            FontWeight.w900),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                showAnimatedDialog(
+                                                  context: context,
+                                                  barrierDismissible: true,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      actions: [
+                                                        Center(
+                                                          child:
+                                                          Container(
+                                                            height: bodyheight * 0.30,
+                                                            margin: EdgeInsets.all(bodyheight * 0.01),
+                                                            width: twidth * 0.55,
+                                                            decoration:BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        'https://priyadevani.000webhostapp.com/Apicalling/${imagelist[index]}'),
+                                                                    fit: BoxFit.cover),
+                                                                border: Border.all(width: 1)),
+                                                          ) ,
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                  animationType: DialogTransitionType.slideFromBottomFade,
+                                                  curve: Curves.fastOutSlowIn,
+                                                  duration: Duration(seconds: 1),
+                                                );
+                                              },
+                                              child: Card(
+                                                child: Container(
+                                                  height: bodyheight * 0.10,
+                                                  margin: EdgeInsets.all(
+                                                      bodyheight * 0.01),
+                                                  width: twidth,
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffd5baba),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          bodyheight * 0.01)),
+                                                  // decoration: BoxDecoration(color: Colors.yellow),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.remove_red_eye_outlined,
+                                                          size: bodyheight * 0.04,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "View        ",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                            bodyheight * 0.03,
+                                                            fontWeight:
+                                                            FontWeight.w900),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Positioned(
+                                          top: bodyheight * 0.23,
+                                          right: twidth * 0.08,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: CircleAvatar(
+                                                radius: 14.0,
+                                                backgroundColor: Colors.white,
+                                                child: Icon(Icons.close,
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  animationType:
+                                  DialogTransitionType.slideFromBottomFade,
+                                  curve: Curves.fastOutSlowIn,
+                                  duration: Duration(seconds: 1),
+                                );
+                              },
+                              child:Container(
+                                height: bodyheight * 0.30,
+                                margin: EdgeInsets.all(bodyheight * 0.01),
+                                width: twidth * 0.55,
+                                decoration:BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            'https://priyadevani.000webhostapp.com/Apicalling/${imagelist[index]}'),
+                                        fit: BoxFit.cover),
+                                    border: Border.all(width: 1)),
+                              ));
+
                     },
-                    child: Container(
-                      height: bodyheight * 0.05,
-                      child: Text(
-                        "",
-                        style: TextStyle(
-                            fontSize: bodyheight * 0.03,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                        options:CarouselOptions(
+                            scrollDirection: Axis.horizontal,
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          aspectRatio: 16 / 9,
+                          autoPlay: true,
+                          height: bodyheight*0.33,
+                          enlargeCenterPage: true,
+                        ) ),
                   ),
+
                   Container(
                     height: bodyheight * 0.10,
                     margin: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -224,6 +621,7 @@ class _editState extends State<edit> {
                         });
                       },
                       controller: details,
+                      maxLines: 10,
                       decoration: InputDecoration(
                           prefixIconColor: Colors.black,
                           prefixIcon: Icon(
@@ -326,11 +724,13 @@ class _editState extends State<edit> {
             });
           } else {
             print("2");
-            for (i = 0; i < imagelist.length; i++) {
-              if (imagelist[i].isNotEmpty) {
-                print("11111111111=========${imagelist}");
+            for (i = 0; i <imagelist.length; i++) {
+              if (imagelist[i] =="") {
+
+                print("11111111111=========${imagelist[i]}");
+
                 List<int> ii = File(imagelist[i]).readAsBytesSync();
-                imagepath[i] = base64Encode(ii);
+                imagepath[i]= base64Encode(ii);
               } else {
                 print("Nothing.......");
               }
@@ -340,13 +740,16 @@ class _editState extends State<edit> {
             print("2==========${imagepath[1]}");
             print("3==========${imagepath[2]}");
 
+
             String image1 = "";
             String image2 = "";
             String image3 = "";
 
+
             image1 = imagepath[0];
             image2 = imagepath[1];
             image3 = imagepath[2];
+
             print("4");
 
             Map productmap = {
@@ -355,7 +758,7 @@ class _editState extends State<edit> {
               "category": catogary1,
               "description": details1,
               "prices": price1,
-              "image1": image1,
+              "image": image1,
               "image2": image2,
               "image3": image3,
               "disprice": discountprice,
@@ -363,7 +766,7 @@ class _editState extends State<edit> {
 
             print("okk");
             var url = Uri.parse(
-                'https://priyadevani.000webhostapp.com/Apicalling/addproduct.php');
+                'https://priyadevani.000webhostapp.com/Apicalling/updateproduct.php');
             var response = await http.post(url, body: productmap);
             print("virajjjjjjjjjjjj");
             print('Response status: ${response.statusCode}');
@@ -372,14 +775,14 @@ class _editState extends State<edit> {
 
             var add = jsonDecode(response.body);
 
-            addproduct_table aa = addproduct_table.fromJson(add);
+            update_product aa = update_product.fromJson(add);
 
             if (aa.connection == 1) // connection
             {
               if (aa.result == 1) // first time data store
               {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Add Product Sucessfully...")));
+                    SnackBar(content: Text("Update Product Sucessfully...")));
               } else if (aa.result == 2) {
                 Fluttertoast.showToast(
                     msg: "Data....",
@@ -429,3 +832,86 @@ class _editState extends State<edit> {
   List imagepath = List.filled(6, "");
   int i = 0;
 }
+
+class update_product {
+  int? connection;
+  int? result;
+  List<Productdata>? productdata;
+
+  update_product({this.connection, this.result, this.productdata});
+
+  update_product.fromJson(Map<String, dynamic> json) {
+    connection = json['connection'];
+    result = json['result'];
+    if (json['productdata'] != null) {
+      productdata = <Productdata>[];
+      json['productdata'].forEach((v) {
+        productdata!.add(new Productdata.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['connection'] = this.connection;
+    data['result'] = this.result;
+    if (this.productdata != null) {
+      data['productdata'] = this.productdata!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Productdata {
+  String? id;
+  String? userid;
+  String? image;
+  String? image2;
+  String? image3;
+  String? productname;
+  String? catogary;
+  String? description;
+  String? price;
+  String? discountprice;
+
+  Productdata(
+      {this.id,
+        this.userid,
+        this.image,
+        this.image2,
+        this.image3,
+        this.productname,
+        this.catogary,
+        this.description,
+        this.price,
+        this.discountprice});
+
+  Productdata.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userid = json['userid'];
+    image = json['image'];
+    image2 = json['image2'];
+    image3 = json['image3'];
+    productname = json['productname'];
+    catogary = json['catogary'];
+    description = json['description'];
+    price = json['price'];
+    discountprice = json['discountprice'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['userid'] = this.userid;
+    data['image'] = this.image;
+    data['image2'] = this.image2;
+    data['image3'] = this.image3;
+    data['productname'] = this.productname;
+    data['catogary'] = this.catogary;
+    data['description'] = this.description;
+    data['price'] = this.price;
+    data['discountprice'] = this.discountprice;
+    return data;
+  }
+}
+
