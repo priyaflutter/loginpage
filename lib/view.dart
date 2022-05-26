@@ -41,7 +41,7 @@ class _adddataState extends State<view1> {
     super.initState();
 
     myviewdata();
-   
+
   }
 
   myviewdata() async {
@@ -208,7 +208,7 @@ class _adddataState extends State<view1> {
                                           ),
                                           Container(
                                             height: bodyheight * 0.04,
-                                            width: twidth * 0.50,
+                                            width: twidth * 0.70,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,

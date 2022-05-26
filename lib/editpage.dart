@@ -35,6 +35,8 @@ class _editState extends State<edit> {
 
 
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,9 +44,10 @@ class _editState extends State<edit> {
 
     userid = splash.pref!.getString('id') ?? "";
 
+
     setState(() {});
     print("imageeeeeeeeeeeeeeeeeee");
-    imagelist = [widget.image1, widget.image2, widget.image3, "", "", ""];
+    imagelist = [widget.image1, widget.image2, widget.image3,"", "", ""];
     String name1 = widget.name1;
     name.text = name1;
     String price1 = widget.price1;
@@ -328,6 +331,7 @@ class _editState extends State<edit> {
                                             ),
                                             InkWell(
                                               onTap: () async {
+                                                print("imageeeeeeeeeeeeeeeeeeeee");
 
                                                 Navigator.pop(context);
                                                 final ImagePicker picker =
@@ -337,11 +341,11 @@ class _editState extends State<edit> {
                                                 await picker.pickImage(source: ImageSource.gallery);
 
 
-                                                if(imagelist[index]=="")
+                                                if(imagelist[index]!="")
                                                 {
+                                                  print("uuuuuuuuuuuuuuuu");
                                                   setState(() {
                                                     print("blankkkkk");
-                                                    print(index);
                                                     imagelist[index]=image1!.path;
                                                     print("============${imagelist[index]}");
                                                   });
@@ -549,9 +553,9 @@ class _editState extends State<edit> {
                     },
                         options:CarouselOptions(
                             scrollDirection: Axis.horizontal,
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          // autoPlayAnimationDuration: Duration(milliseconds: 800),
                           aspectRatio: 16 / 9,
-                          autoPlay: true,
+                          // autoPlay: true,
                           height: bodyheight*0.33,
                           enlargeCenterPage: true,
                         ) ),
@@ -725,15 +729,17 @@ class _editState extends State<edit> {
           } else {
             print("2");
             for (i = 0; i <imagelist.length; i++) {
-              if (imagelist[i] =="") {
-
+              
+              if (imagelist[i] !="") {
                 print("11111111111=========${imagelist[i]}");
-
                 List<int> ii = File(imagelist[i]).readAsBytesSync();
+                print("pic imageeeeeeeeeee");
                 imagepath[i]= base64Encode(ii);
-              } else {
-                print("Nothing.......");
+                print("imagepathhhhh");
               }
+              else
+                {
+                }
             }
             print("3");
             print("1==========${imagepath[0]}");
@@ -741,27 +747,30 @@ class _editState extends State<edit> {
             print("3==========${imagepath[2]}");
 
 
-            String image1 = "";
-            String image2 = "";
-            String image3 = "";
+            String newimage4= "";
+            String newimage5 = "";
+            String newimage6 = "";
 
 
-            image1 = imagepath[0];
-            image2 = imagepath[1];
-            image3 = imagepath[2];
+            newimage4 = imagepath[0];
+            newimage5 = imagepath[1];
+            newimage6 = imagepath[2];
 
             print("4");
 
             Map productmap = {
-              "id": userid,
+              "id": widget.productid,
               "names": name1,
               "category": catogary1,
               "description": details1,
               "prices": price1,
-              "image": image1,
-              "image2": image2,
-              "image3": image3,
+              "image": widget.image1,
+              "image2": widget.image2,
+              "image3": widget.image3,
               "disprice": discountprice,
+              "imagedata1":newimage4,
+              "imagedata2":newimage5,
+              "imagedata3":newimage6
             };
 
             print("okk");
