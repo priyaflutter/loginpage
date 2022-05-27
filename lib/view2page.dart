@@ -431,7 +431,7 @@ class _view2State extends State<view2> {
       'key': 'rzp_test_Kg84my9pEQ1MGW',
       'amount':100*int.parse(widget.discountprice),
       'name': widget.productname,
-      'description': 'Fine T-Shirt',
+      // 'description': 'Fine T-Shirt',
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {'contact': '9586877460', 'email': 'priyadevani25@gmail.com'},
