@@ -251,7 +251,6 @@ class Viewdata extends StatefulWidget {
 }
 
 class _ViewdataState extends State<Viewdata> {
-
   List imagelist = [
     "images/fashion.jpg",
     "images/Health.jpg",
@@ -273,8 +272,7 @@ class _ViewdataState extends State<Viewdata> {
     "Toy Children & Baby",
   ];
 
-   String? userid;
-
+  String? userid;
 
   @override
   void initState() {
@@ -283,13 +281,16 @@ class _ViewdataState extends State<Viewdata> {
 
     userid = splash.pref!.getString("id") ?? "";
 
-    Map map1 = {"category":catogaryy};
-    setState(() {
-      
-    });
-
+    catogarydata();
   }
 
+  catogarydata() async {
+    var url = Uri.parse(
+        'https://priyadevani.000webhostapp.com/Apicalling/addview.php');
+    var response = await http.post(url, body: {"catogary": catogaryy});
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +354,7 @@ class _ViewdataState extends State<Viewdata> {
                     onTap: () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) {
-                          return create1();
+                          return view1();
                         },
                       ));
                     },
@@ -403,16 +404,13 @@ class _ViewdataState extends State<Viewdata> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          EasyLoading.show(status: "loading...")
-              .whenComplete(() {
-            Future.delayed(Duration(seconds: 5))
-                .then((value) {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return view1();
-                    },
-                  ));
+          EasyLoading.show(status: "loading...").whenComplete(() {
+            Future.delayed(Duration(seconds: 5)).then((value) {
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return view1();
+                },
+              ));
 
               EasyLoading.dismiss();
             });
@@ -423,8 +421,6 @@ class _ViewdataState extends State<Viewdata> {
   }
 
   TextEditingController search = TextEditingController();
-
-
 }
 
 class adddata extends StatefulWidget {
@@ -522,8 +518,7 @@ class _adddataState extends State<adddata> {
                                 context: context,
                                 dialogType: DialogType.QUESTION,
                                 animType: AnimType.BOTTOMSLIDE,
-                                title:
-                                    'Do you Want to Edit Product........',
+                                title: 'Do you Want to Edit Product........',
                                 btnCancelOnPress: () {
                                   setState(() {
                                     imagelist[index] = "";
@@ -546,37 +541,40 @@ class _adddataState extends State<adddata> {
                               )..show();
                             },
                             child: Stack(
-                              children: [Container(
-                                height: bodyheight * 0.30,
-                                margin: EdgeInsets.all(bodyheight * 0.01),
-                                width: twidth * 0.30,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: FileImage(File(imagelist[index])),
-                                        fit: BoxFit.fill),
-                                    border: Border.all(width: 1)),
-
-                              ),Positioned(
-                                top: bodyheight*0.001,
-                                right: twidth*0.01,
-                                child: GestureDetector(
-                                  onTap: () {
-
-                                    setState(() {
-                                      imagelist[index] = "";
-                                      print("cancelllllllllll");
-                                    });
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: CircleAvatar(
-                                      radius: 14.0,
-                                      backgroundColor: Colors.white,
-                                      child: Icon(Icons.close, color: Colors.red),
+                              children: [
+                                Container(
+                                  height: bodyheight * 0.30,
+                                  margin: EdgeInsets.all(bodyheight * 0.01),
+                                  width: twidth * 0.30,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              FileImage(File(imagelist[index])),
+                                          fit: BoxFit.fill),
+                                      border: Border.all(width: 1)),
+                                ),
+                                Positioned(
+                                  top: bodyheight * 0.001,
+                                  right: twidth * 0.01,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        imagelist[index] = "";
+                                        print("cancelllllllllll");
+                                      });
+                                    },
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: CircleAvatar(
+                                        radius: 14.0,
+                                        backgroundColor: Colors.white,
+                                        child: Icon(Icons.close,
+                                            color: Colors.red),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),],
+                              ],
                             ),
                           );
                         }),
@@ -674,10 +672,12 @@ class _adddataState extends State<adddata> {
                   Container(
                     height: bodyheight * 0.10,
                     margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: TextField(
+                    child:
+                    TextField(
                       onChanged: (value) {
                         setState(() {
-                          catogarystatus = false;
+
+                         catogarystatus=false;
                         });
                       },
                       controller: catogary,
@@ -878,6 +878,7 @@ class _adddataState extends State<adddata> {
               }
             }
           }
+
           Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) {
               return view1();
@@ -906,6 +907,8 @@ class _adddataState extends State<adddata> {
   TextEditingController price = TextEditingController();
   TextEditingController disprice = TextEditingController();
 
+
+
   bool namestatus = false;
   bool catogarystatus = false;
   bool detailsstatus = false;
@@ -914,6 +917,7 @@ class _adddataState extends State<adddata> {
   List imagelist = [];
   List imagepath = List.filled(6, "");
   int i = 0;
+  String mm = "";
 }
 
 class addproduct_table {

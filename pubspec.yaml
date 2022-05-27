@@ -55,7 +55,8 @@ dependencies:
   flutter_staggered_grid_view:
   awesome_dialog:
   badges:
-  carousel_slider: 
+  carousel_slider:
+  razorpay_flutter:
 
 dev_dependencies:
   flutter_test:

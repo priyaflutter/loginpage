@@ -1,18 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:loginpage/editpage.dart';
-import 'package:loginpage/homepage.dart';
 import 'package:loginpage/splashscreen.dart';
 import 'package:loginpage/view.dart';
 import 'package:http/http.dart' as http;
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class view2 extends StatefulWidget {
   String image;
@@ -51,6 +47,8 @@ class _view2State extends State<view2> {
 
   int currentimage = 0;
 
+  late Razorpay _razorpay;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,6 +56,11 @@ class _view2State extends State<view2> {
     userid = splash.pref!.getString('id') ?? "";
     setState(() {});
     newimagelist = [widget.image, widget.image2, widget.image3, "", "", ""];
+
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
 
     setState(() {});
   }
@@ -315,6 +318,24 @@ class _view2State extends State<view2> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton.extended(
+            onPressed:openCheckout ,
+            backgroundColor: Colors.white,
+            icon: Icon(
+              Icons.shopping_bag_outlined,
+              color: Colors.black,
+            ),
+            label: Text(
+              "Buy Now",
+              style: TextStyle(
+                  fontSize: bodyheight * 0.03,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+          ),
+          SizedBox(
+            height: bodyheight * 0.02,
+          ),
+          FloatingActionButton.extended(
             onPressed: () {
               Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) {
@@ -396,4 +417,55 @@ class _view2State extends State<view2> {
   List imagelist = ["", "", "", "", "", ""];
   List imagepath = List.filled(6, "");
   int i = 0;
+
+  //payment
+
+
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_Kg84my9pEQ1MGW',
+      'amount':100*int.parse(widget.discountprice),
+      'name': widget.productname,
+      'description': 'Fine T-Shirt',
+      'retry': {'enabled': true, 'max_count': 1},
+      'send_sms_hash': true,
+      'prefill': {'contact': '9586877460', 'email': 'priyadevani25@gmail.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print('Success Response: $response');
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('Error Response: $response');
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print('External SDK Response: $response');
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
 }
